@@ -8,7 +8,6 @@ from PIL import ImageTk, Image
 class game_gui:
     def __init__(self):
         window = tk.Tk()
-        window.geometry("800x800")
         
         # Create a photoimage object of the image in the path
         image1 = Image.open("Connect+4+Background.jpg")
