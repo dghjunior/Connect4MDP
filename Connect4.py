@@ -12,6 +12,7 @@ class Connect4:
     def print_board(self):
         # print the board
         for row in self.board:
+            row = '| (' + ') ('.join(row) + ') |'
             print(row)
 
     def drop_piece(self, col):
