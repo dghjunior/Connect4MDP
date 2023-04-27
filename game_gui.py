@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter.ttk import *
-from tkinter import *
+from tkinter import ttk
 from PIL import Image, ImageTk
 
 # Piece Location Info:
@@ -27,34 +26,36 @@ class Connect4:
         self.window.configure(bg='white')
         self.window.title('Connect 4')
 
-        button_frame = Frame(self.window, bg='white')
-        canvas_frame = Frame(self.window, bg='white')
-        self.canvas = Canvas(canvas_frame, bg="white", width=790, height=700)
+        style = ttk.Style()
+        style.configure('W.TButton', font= ('Arial', 10, 'underline'), foreground='Green')
+
+        button_frame = tk.Frame(self.window, bg='white')
+        canvas_frame = tk.Frame(self.window, bg='white')
+        self.canvas = tk.Canvas(canvas_frame, bg="white", width=790, height=700)
 
         button_frame.pack()
         canvas_frame.pack()
 
-        button0 = Button(button_frame, text="1", command = lambda: self.drop_piece(0))
-        button0.grid(row=0, column=0, padx=40, pady=10)
-        button1 = Button(button_frame, text="2", command = lambda: self.drop_piece(1))
-        button1.grid(row=0, column=1, padx=38, pady=10)
-        button2 = Button(button_frame, text="3", command = lambda: self.drop_piece(2))
-        button2.grid(row=0, column=2, padx=38, pady=10)
-        button3 = Button(button_frame, text="4", command = lambda: self.drop_piece(3))
-        button3.grid(row=0, column=3, padx=38, pady=10)
-        button4 = Button(button_frame, text="5", command = lambda: self.drop_piece(4))
-        button4.grid(row=0, column=4, padx=38, pady=10)
-        button5 = Button(button_frame, text="6", command = lambda: self.drop_piece(5))
-        button5.grid(row=0, column=5, padx=38, pady=10)
-        button6 = Button(button_frame, text="7", command = lambda: self.drop_piece(6))
-        button6.grid(row=0, column=6, padx=38, pady=10)
+        button0 = ttk.Button(button_frame, text="1", style='W.TButton', command = lambda: self.drop_piece(0))
+        button0.grid(row=0, column=0, padx=9, pady=10)
+        button1 = ttk.Button(button_frame, text="2", style='W.TButton', command = lambda: self.drop_piece(1))
+        button1.grid(row=0, column=1, padx=9, pady=10)
+        button2 = ttk.Button(button_frame, text="3", style='W.TButton', command = lambda: self.drop_piece(2))
+        button2.grid(row=0, column=2, padx=9, pady=10)
+        button3 = ttk.Button(button_frame, text="4", style='W.TButton', command = lambda: self.drop_piece(3))
+        button3.grid(row=0, column=3, padx=9, pady=10)
+        button4 = ttk.Button(button_frame, text="5", style='W.TButton', command = lambda: self.drop_piece(4))
+        button4.grid(row=0, column=4, padx=9, pady=10)
+        button5 = ttk.Button(button_frame, text="6", style='W.TButton', command = lambda: self.drop_piece(5))
+        button5.grid(row=0, column=5, padx=9, pady=10)
+        button6 = ttk.Button(button_frame, text="7", style='W.TButton', command = lambda: self.drop_piece(6))
+        button6.grid(row=0, column=6, padx=9, pady=10)
 
         self.canvas.grid(row=1, column=0)
 
-        board = Image.open('Connect4Board.png')
+        board = Image.open('images/Connect4Board.png')
         bgimg = ImageTk.PhotoImage(board)
 
-        # photoimage = ImageTk.PhotoImage(file="Connect4Board.png")
         self.canvas.create_image(400, 350, image=bgimg)
         self.canvas.image = bgimg
 
@@ -69,10 +70,10 @@ class Connect4:
     def end_screen(self, winner):
         self.forget()
         if winner == 'tie':
-            Label(self.window, text="It's a tie!", font=("Arial", 30), bg="white").pack()
+            tk.Label(self.window, text="It's a tie!", font=("Arial", 30), bg="white").pack()
         else:
-            Label(self.window, text="Player " + winner + " wins!", font=("Arial", 30), bg="white").pack()
-        Button(self.window, text="Play again", command=self.new_board).pack()
+            tk.Label(self.window, text="Player " + winner + " wins!", font=("Arial", 30), bg="white").pack()
+        ttk.Button(self.window, text="Play again", command=self.new_board).pack()
 
     def drop_piece(self, col):
         # drop a piece in the given column
@@ -137,7 +138,7 @@ class Connect4:
         return True
 
     def playRed(self, row, col):
-        load = Image.open('red.png')
+        load = Image.open('images/red.png')
         render = ImageTk.PhotoImage(load)
 
         x = 123 + 92*col
@@ -148,7 +149,7 @@ class Connect4:
         self.canvas.tag_lower("pieces")
 
     def playYellow(self, row, col):
-        load = Image.open('yellow.png')
+        load = Image.open('images/yellow.png')
         render = ImageTk.PhotoImage(load)
 
         x = 123 + 92*col
