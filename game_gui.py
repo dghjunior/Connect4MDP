@@ -1,37 +1,62 @@
-# import dependencies
-import numpy as np
-import matplotlib
 import tkinter as tk
 from tkinter import *
-import Connect4
-from PIL import ImageTk, Image
+from PIL import Image, ImageTk
 
-class game_gui:
-    def __init__(self):
-        window = tk.Tk()
-        window.title("Connect 4")
-        window.geometry("780x650")
-        window.maxsize(780,650)
+window = tk.Tk()
+window.geometry('790x800')
 
-        frame = Frame(window)
-        frame.pack()
+frame=Frame(window)
+frame.pack()
 
-        canvas = Canvas(frame, bg="white", width=780, height=650)
-        canvas.pack()
-        
-        # Create a photoimage object of the image in the path
-        background = ImageTk.PhotoImage(file="Connect4Board.png")
-        canvas.create_image(390, 325, image=background)
+canvas = Canvas(frame, bg="white", width=790, height=700)
+canvas.pack()
 
-        red_piece = PhotoImage(file='red.png')
-        # x for left = 113, y for top = 73
-        # increase x by 92 for each column
-        # increase y by 92 for each row
-        canvas.create_image(297, 533, image=red_piece)
-        yellow_piece = PhotoImage(file='yellow.png')
-        canvas.create_image(113, 533, image=yellow_piece)
+img_refs = []
 
-        window.mainloop()
+piecex = 123
+piecey = 95
 
-        
-gui = game_gui()
+def showRed():
+    global piecex
+    global piecey
+    load = Image.open('red.png')
+    render = ImageTk.PhotoImage(load)
+
+    canvas.create_image(piecex, piecey, image=render, tags=("pieces"))
+    img_refs.append(render)
+    canvas.tag_lower("pieces")
+
+    piecex = piecex + 0
+    piecey = piecey + 92
+
+def showYellow():
+    global piecex
+    global piecey
+    load = Image.open('yellow.png')
+    render = ImageTk.PhotoImage(load)
+
+    canvas.create_image(piecex, piecey, image=render, tags=("pieces"))
+    img_refs.append(render)
+    canvas.tag_lower("pieces")
+
+    piecex = piecex + 92
+    piecey = piecey + 92
+
+board = Image.open('Connect4Board.png')
+bgimg = ImageTk.PhotoImage(board)
+
+photoimage = ImageTk.PhotoImage(file="Connect4Board.png")
+canvas.create_image(400, 350, image=photoimage)
+
+# label1 = Label(image=bgimg)
+# label1.image = bgimg
+# label1.place(x=0, y=0)
+
+Button(window, text="Red", command = showRed).pack()
+Button(window, text="Yellow", command = showYellow).pack()
+
+window.mainloop()
+
+# x for left = 113, y for top = 73
+# increase x by 92 for each column
+# increase y by 92 for each row
