@@ -68,7 +68,7 @@ class Connect4:
         while True:
             self.print_board()
             if self.check_win():
-                print('Player', self.turn, 'wins!')
+                print('Player', 'r', 'wins!') if self.turn == 'y' else print('Player', 'y', 'wins!')
                 break
             if self.check_tie():
                 print('Tie!')
