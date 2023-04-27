@@ -3,12 +3,12 @@ from tkinter.ttk import *
 from tkinter import *
 from PIL import Image, ImageTk
 
-
+# Piece Location Info:
+## x for left = 123, y for top = 95
+## increase x by 92 for each column
+## increase y by 92 for each row
 
 img_refs = []
-
-# piecex = 123
-# piecey = 95
 
 class Connect4:
     def __init__(self):
@@ -19,6 +19,7 @@ class Connect4:
     def new_board(self):
         # create a new board with 'e' for empty in every position
         self.board = [['e' for x in range(7)] for y in range(6)]
+        self.turn = 'r'
         self.window.destroy()
 
         self.window = tk.Tk()
@@ -161,19 +162,4 @@ class Connect4:
         for widgets in self.window.winfo_children():
             widgets.destroy()
 
-#board = Image.open('Connect4Board.png')
-#bgimg = ImageTk.PhotoImage(board)
-
-#photoimage = ImageTk.PhotoImage(file="Connect4Board.png")
-#canvas.create_image(400, 350, image=photoimage)
-
-# Button(window, text="Red", command = showRed).pack()
-# Button(window, text="Yellow", command = showYellow).pack()
-
 game = Connect4()
-
-# window.mainloop()
-
-# x for left = 123, y for top = 95
-# increase x by 92 for each column
-# increase y by 92 for each row
