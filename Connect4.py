@@ -32,8 +32,8 @@ class Connect4:
             for col in range(7):
                 if self.board[row][col] != 'e':
                     if self.check_win_from(row, col):
-                        return True
-        return False
+                        return True, self.turn
+        return False, 'e'
     
     def check_win_from(self, row, col):
         # check if the game is won from the given position
@@ -67,7 +67,7 @@ class Connect4:
         # play the game
         while True:
             self.print_board()
-            if self.check_win():
+            if self.check_win()[0]:
                 print('Player', 'r', 'wins!') if self.turn == 'y' else print('Player', 'y', 'wins!')
                 break
             if self.check_tie():
