@@ -27,7 +27,7 @@ class Connect4:
         self.window.title('Connect 4')
 
         style = ttk.Style()
-        style.configure('W.TButton', font= ('Arial', 10, 'underline'), foreground='Green')
+        style.configure('W.TButton', font= ('Arial', 10), foreground='black')
 
         button_frame = tk.Frame(self.window, bg='white')
         canvas_frame = tk.Frame(self.window, bg='white')
