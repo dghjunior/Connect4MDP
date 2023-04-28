@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Apr 28 16:26:09 2023
+Memory.py
 
-@author: kylebecker
+A Memory class representing the memory of the DQN network. Taken from 
+https://towardsdatascience.com/playing-connect-4-with-deep-q-learning-76271ed663ca.
+
 """
 
 class Memory:
