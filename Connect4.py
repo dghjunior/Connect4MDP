@@ -63,10 +63,18 @@ class Connect4:
                     return False
         return True
     
+    def available_moves(self):
+        moves = []
+        for index in range(7):
+            if 'e' in self.board[0][index]:
+                moves.append(index)              
+        return moves
+    
     def play(self):
         # play the game
         while True:
             self.print_board()
+            print(game.available_moves())
             if self.check_win()[0]:
                 print('Player', 'r', 'wins!') if self.turn == 'y' else print('Player', 'y', 'wins!')
                 break
