@@ -32,18 +32,21 @@ def train_step(model, optimizer, observations, actions, rewards):
         optimizer.apply_gradients(zip(grads, model.trainable_variables))
         
 def get_action(model, observation, epsilon, available_moves=[0,1,2,3,4,5,6]):
-    #determine whether model action or random action based on epsilon
-    act = np.random.choice(['model','random'], 1, p=[1-epsilon, epsilon])[0]
-    observation = np.array(observation).reshape(1,6,7,1)
-    logits = model.predict(observation)
-    prob_weights = tf.nn.softmax(logits).numpy()
-    
-    if act == 'model':
-        action = list(prob_weights[0]).index(max(prob_weights[0]))
-    if act == 'random':
-        action = np.random.choice(available_moves)
+    if len(available_moves) == 0:
+        return None, None
+    else:
+        #determine whether model action or random action based on epsilon
+        act = np.random.choice(['model','random'], 1, p=[1-epsilon, epsilon])[0]
+        observation = np.array(observation).reshape(1,6,7,1)
+        logits = model.predict(observation)
+        prob_weights = tf.nn.softmax(logits).numpy()
         
-    return action, prob_weights[0]
+        if act == 'model':
+            action = list(prob_weights[0]).index(max(prob_weights[0]))
+        if act == 'random':
+            action = np.random.choice(available_moves)
+            
+        return action, prob_weights[0]
 
 
 def random_turn(connect4):
@@ -121,7 +124,3 @@ for episode in range(num_episodes):
         
 ## Save model
 model.save('models/DQN.keras')
-
-
-
-
