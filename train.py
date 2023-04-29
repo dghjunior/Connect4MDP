@@ -118,7 +118,7 @@ for episode in range(num_episodes):
         
         if done[0]:
             
-            train_log[episode] = (win_count, win_count / episode)
+            train_log[episode] = (win_count, win_count / (episode+1))
             
             # train network
             train_step(model, optimizer,
