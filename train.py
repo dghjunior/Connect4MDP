@@ -101,7 +101,11 @@ for episode in range(num_episodes):
         random_turn(env)
         observation = encode_board(env.board)
         
-        done = env.check_win()
+        if env.check_tie():
+            reward = 1
+            done = [True, 'tie']
+        else:
+            done = env.check_win()
         
         # Set rewards for wins and losses
         if not done[0]:
@@ -111,9 +115,6 @@ for episode in range(num_episodes):
         elif 'r' in done[1]: # network wins
             win_count += 1
             reward = 20
-        elif env.check_tie():
-            reward = 0
-            done[0] = True
             
         # TODO: deal with ties ?
 
