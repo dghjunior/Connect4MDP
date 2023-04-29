@@ -17,6 +17,8 @@ class Connect4:
 
     def drop_piece(self, col):
         # drop a piece in the given column
+        if col == None:
+            return
         if col < 0 or col > 6:
             print('Invalid column, please give column 0-6')
         else:

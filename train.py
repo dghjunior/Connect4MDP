@@ -51,8 +51,11 @@ def get_action(model, observation, epsilon, available_moves=[0,1,2,3,4,5,6]):
 
 
 def random_turn(connect4):
-    col = np.random.choice(connect4.available_moves())
-    connect4.drop_piece(col)
+    if len(connect4.available_moves()) == 0:
+        return
+    else:
+        col = np.random.choice(connect4.available_moves())
+        connect4.drop_piece(col)
 
 def encode_board(board):
     new_board = np.empty([6,7,1], dtype=np.float64())
