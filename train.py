@@ -123,4 +123,4 @@ for episode in range(num_episodes):
             break
         
 ## Save model
-model.save('models/DQN.keras')
+model.save('models/DQN.keras', save_format='tf')
