@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+import matplotlib.pyplot as plt
 
 from Connect4 import Connect4
 from Memory import Memory
@@ -76,6 +77,8 @@ win_count = 0
 
 optimizer = keras.optimizers.Adam(0.001)
 
+train_log = {}
+
 for episode in range(num_episodes):
     
     # Start new game
@@ -115,6 +118,8 @@ for episode in range(num_episodes):
         
         if done[0]:
             
+            train_log[episode] = (win_count, win_count / episode)
+            
             # train network
             train_step(model, optimizer,
                        np.array(memory.observations),
@@ -122,5 +127,26 @@ for episode in range(num_episodes):
                        memory.rewards)
             break
         
+## Show training log
+games = list(train_log.keys())
+wins, win_p = train_log.values()
+
+
+plt.plot(games, wins)
+plt.xlabel('Games')
+plt.ylabel('Wins')
+plt.title('Training Wins')
+plt.show()
+
+plt.plot(games, win_p)
+plt.xlabel('Games')
+plt.ylabel('Win Rate')
+plt.title('Training Win Rate')
+plt.show()
+
 ## Save model
-model.save('models/DQN.keras', save_format='tf')
+model.save_weights('models/DQN_weights.h5')
+
+
+
+
