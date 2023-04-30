@@ -133,7 +133,8 @@ for episode in range(num_episodes):
         
 ## Show training log
 games = list(train_log.keys())
-wins, win_p = train_log.values()
+wins = [train_log[game][0] for game in games]
+win_p = [train_log[game][1] for game in games]
 
 
 plt.plot(games, wins)
