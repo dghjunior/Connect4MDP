@@ -1,6 +1,7 @@
 import tensorflow as tf
 from keras import layers
 from keras import Model
+import numpy as np
 
 class DQN(Model):
     """ A class representing a deep Q network for connect 4. """
@@ -24,3 +25,14 @@ class DQN(Model):
         x = self.dense3(x)
         
         return x
+    
+    def get_action(model, observation, epsilon, available_moves=[0,1,2,3,4,5,6]):
+        if len(available_moves) == 0:
+            return None, None
+        else:
+            observation = np.array(observation).reshape(1,6,7,1)
+            logits = model.predict(observation)
+            prob_weights = tf.nn.softmax(logits).numpy()
+            action = list(prob_weights[0]).index(max(prob_weights[0]))
+                
+            return action, prob_weights[0]
