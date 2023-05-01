@@ -80,7 +80,8 @@ epsilon = 1
 reward = 0
 win_count = 0
 
-optimizer = keras.optimizers.Adam(0.001)
+optimizer1 = keras.optimizers.Adam(0.001)
+optimizer2 = keras.optimizers.Adam(0.001)
 
 train_log = {}
 
@@ -136,12 +137,12 @@ for episode in range(num_episodes):
             train_log[episode] = (win_count, win_count / (episode+1))
             
             # train network
-            train_step(model_p1, optimizer,
+            train_step(model_p1, optimizer1,
                        np.array(memory.observations),
                        np.array(memory.actions),
                        memory.rewards)
             
-            train_step(model_p2, optimizer,
+            train_step(model_p2, optimizer2,
                        np.array(memory2.observations),
                        np.array(memory2.actions),
                        memory2.rewards)
