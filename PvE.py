@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-import models.DQN as DQN
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
+
+from Connect4 import Connect4
+from models.DQN import DQN
 
 # Piece Location Info:
 ## x for left = 123, y for top = 95
@@ -83,7 +85,7 @@ class Connect4:
             tk.Label(self.window, text="Player " + winner + " wins!", font=("Arial", 30), bg="white").pack()
         ttk.Button(self.window, text="Play again", command=self.new_board).pack()
 
-    def encode_board(board):
+    def encode_board(self, board):
         new_board = np.empty([6,7,1], dtype=np.float64())
         encoding = {'e': 0, 'r': 1, 'y': 2}
         for row in range(6):
@@ -110,11 +112,6 @@ class Connect4:
                         self.board[row][col] = 'r'
                         self.turn = 'y'
                         break
-                    else:
-                        self.playYellow(row, col)
-                        self.board[row][col] = 'y'
-                        self.turn = 'r'
-                        break
 
             if self.check_win():
                 if self.turn == 'y':
@@ -125,8 +122,14 @@ class Connect4:
             elif self.check_tie():
                 self.end_screen('tie')
 
-            model.get_action(self.board, self.encode_board(self.board), self.available_moves())
-            
+            model_action = model.get_action(self.encode_board(self.board), self.available_moves())
+            for row in range(5, -1, -1):
+                if self.board[row][model_action[0]] == 'e':
+                    if self.turn == 'y':
+                        self.playYellow(row, model_action[0])
+                        self.board[row][model_action[0]] = 'y'
+                        self.turn = 'r'
+                        break            
 
     def check_win(self):
         # check if the game is won

@@ -26,12 +26,12 @@ class DQN(Model):
         
         return x
     
-    def get_action(model, observation, available_moves=[0,1,2,3,4,5,6]):
+    def get_action(self, observation, available_moves=[0,1,2,3,4,5,6]):
         if len(available_moves) == 0:
             return None, None
         else:
             observation = np.array(observation).reshape(1,6,7,1)
-            logits = model.predict(observation)
+            logits = self.predict(observation)
             prob_weights = tf.nn.softmax(logits).numpy()
             action = list(prob_weights[0]).index(max(prob_weights[0]))
                 
