@@ -26,7 +26,7 @@ class DQN(Model):
         
         return x
     
-    def get_action(model, observation, epsilon, available_moves=[0,1,2,3,4,5,6]):
+    def get_action(model, observation, available_moves=[0,1,2,3,4,5,6]):
         if len(available_moves) == 0:
             return None, None
         else:

@@ -163,4 +163,4 @@ class Connect4:
         for widgets in self.window.winfo_children():
             widgets.destroy()
 
-game = Connect4()
+# game = Connect4()
