@@ -21,7 +21,7 @@ def compute_loss(logits, actions, rewards):
     loss = tf.reduce_mean(neg_logprob * rewards)
     return loss
 
-@tf.function
+#@tf.function
 def train_step(model, optimizer, observations, actions, rewards):
     with tf.GradientTape() as tape:
       # Forward propagate through the agent network
@@ -129,7 +129,8 @@ for episode in range(num_episodes):
         # TODO: deal with ties ?
 
         memory.add_to_memory(observation, action, reward)
-        memory2.add_to_memory(observation, action2, -reward)
+        reward = np.int32(-reward)
+        memory2.add_to_memory(observation, action2, reward)
         
         
         if done[0]:
@@ -146,6 +147,15 @@ for episode in range(num_episodes):
                        np.array(memory2.observations),
                        np.array(memory2.actions),
                        memory2.rewards)
+            
+            # Save weights every 1000 episodes
+            if episode % 1000 == 0:
+                
+                print(f"Saving weights for episode {episode}")
+                path_p1 = f"models/weights/p1_weights_{episode}.h5"
+                path_p2 = f"models/weights/p2_weights_{episode}.h5"
+                model_p1.save_weights(path_p1)
+                model_p2.save_weights(path_p2)
             break
         
 ## Show training log
@@ -158,13 +168,13 @@ plt.plot(games, wins)
 plt.xlabel('Games')
 plt.ylabel('Wins')
 plt.title('Training Wins')
-plt.show()
+plt.savefig('training_wins.png')
 
 plt.plot(games, win_p)
 plt.xlabel('Games')
 plt.ylabel('Win Rate')
 plt.title('Training Win Rate')
-plt.show()
+plt.savefig('training_winrate.png')
 
 ## Save model
 model_p1.save_weights('models/DQN_weights_player1.h5')
