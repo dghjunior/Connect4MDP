@@ -17,7 +17,7 @@ img_refs = []
 model = DQN()
 dummy_input = tf.zeros(shape=(1, 6, 7, 1))
 model(dummy_input)
-model.load_weights("runs/50000 epochs/DQN_weights.h5")
+model.load_weights("models/weights/p1_weights_1000.h5")
 
 class Connect4:
     def __init__(self):
