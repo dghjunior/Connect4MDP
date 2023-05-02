@@ -121,15 +121,25 @@ class Connect4:
                 self.end_screen(winner)
             elif self.check_tie():
                 self.end_screen('tie')
+        self.model_move()
 
-            model_action = model.get_action(self.encode_board(self.board), self.available_moves())
-            for row in range(5, -1, -1):
-                if self.board[row][model_action[0]] == 'e':
-                    if self.turn == 'y':
-                        self.playYellow(row, model_action[0])
-                        self.board[row][model_action[0]] = 'y'
-                        self.turn = 'r'
-                        break            
+    def model_move(self):
+        model_action = model.get_action(self.encode_board(self.board), self.available_moves())
+        for row in range(5, -1, -1):
+            if self.board[row][model_action[0]] == 'e':
+                if self.turn == 'y':
+                    self.playYellow(row, model_action[0])
+                    self.board[row][model_action[0]] = 'y'
+                    self.turn = 'r'
+                    break         
+        if self.check_win():
+            if self.turn == 'y':
+                winner = 'Red'
+            else:
+                winner = 'Yellow'
+            self.end_screen(winner)
+        elif self.check_tie():
+            self.end_screen('tie')   
 
     def check_win(self):
         # check if the game is won
