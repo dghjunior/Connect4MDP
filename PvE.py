@@ -6,6 +6,7 @@ import tensorflow as tf
 
 from Connect4 import Connect4
 from models.DQN import DQN
+import new_train
 
 # Piece Location Info:
 ## x for left = 123, y for top = 95
@@ -17,7 +18,7 @@ img_refs = []
 model = DQN()
 dummy_input = tf.zeros(shape=(1, 6, 7, 1))
 model(dummy_input)
-model.load_weights("models/weights/p1_weights_1000.h5")
+model.load_weights("models/DQN_weights.h5")
 
 class Connect4:
     def __init__(self):
@@ -124,7 +125,7 @@ class Connect4:
         self.model_move()
 
     def model_move(self):
-        model_action = model.get_action(self.encode_board(self.board), self.available_moves())
+        model_action = model.get_action(model, self.encode_board(self.board), self.available_moves())
         for row in range(5, -1, -1):
             if self.board[row][model_action[0]] == 'e':
                 if self.turn == 'y':

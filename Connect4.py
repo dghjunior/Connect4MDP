@@ -8,6 +8,7 @@ class Connect4:
     def new_board(self):
         # create a new board with 'e' for empty in every position
         self.board = [['e' for x in range(7)] for y in range(6)]
+        self.turn = 'r'
 
     def print_board(self):
         # print the board
@@ -30,29 +31,49 @@ class Connect4:
 
     def check_win(self):
         # check if the game is won
+        winner = 'r' if self.turn == 'y' else 'y'
         for row in range(6):
             for col in range(7):
                 if self.board[row][col] != 'e':
                     if self.check_win_from(row, col):
-                        return True, self.turn
+                        return True, winner
         return False, 'e'
     
     def check_win_from(self, row, col):
         # check if the game is won from the given position
         # check horizontal
-        if col <= 3:
+        ## check right
+        if col < 4:
             if self.board[row][col] == self.board[row][col+1] == self.board[row][col+2] == self.board[row][col+3]:
                 return True
+        ## check left
+        if col > 2:
+            if self.board[row][col] == self.board[row][col-1] == self.board[row][col-2] == self.board[row][col-3]:
+                return True
         # check vertical
-        if row <= 2:
+        ## check up
+        if row < 3:
             if self.board[row][col] == self.board[row+1][col] == self.board[row+2][col] == self.board[row+3][col]:
                 return True
-        # check diagonal down
-        if row <= 2 and col <= 3:
+        ## check down
+        if row > 2:
+            if self.board[row][col] == self.board[row-1][col] == self.board[row-2][col] == self.board[row-3][col]:
+                return True
+        # check diagonal
+        ## check up-right
+        if row < 3 and col < 4:
             if self.board[row][col] == self.board[row+1][col+1] == self.board[row+2][col+2] == self.board[row+3][col+3]:
                 return True
-        # check diagonal up
-        if row >= 3 and col <= 3:
+        ## check down-left
+        if row > 2 and col > 2:
+            if self.board[row][col] == self.board[row-1][col-1] == self.board[row-2][col-2] == self.board[row-3][col-3]:
+                return True
+        ## check up-left
+        if row < 3 and col > 2:
+            if self.board[row][col] == self.board[row+1][col-1] == self.board[row+2][col-2] == self.board[row+3][col-3]:
+                return True
+        ## check down-right
+        if row > 2 and col < 4:
             if self.board[row][col] == self.board[row-1][col+1] == self.board[row-2][col+2] == self.board[row-3][col+3]:
                 return True
         return False
