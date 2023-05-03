@@ -167,7 +167,7 @@ for episode in range(num_episodes):
         
         if env.check_tie():
             reward = 10
-            print(str(episode) + ": " + str(memory.actions))
+            print(str(episode) + ": " + str(memory.actions) + " - tie")
             done = [True, 'tie']
         else:
             done = env.check_win()
@@ -181,11 +181,11 @@ for episode in range(num_episodes):
                 reward = 1
         elif 'y' in done[1]: # random player wins
             reward = -100
-            print(str(episode) + ": " + str(memory.actions))
+            print(str(episode) + ": " + str(memory.actions) + " - random wins")
         elif 'r' in done[1]: # network wins
             win_count += 1
             reward = 100
-            print(str(episode) + ": " + str(memory.actions))
+            print(str(episode) + ": " + str(memory.actions) + " - network wins")
 
         memory.add_to_memory(observation, action, reward)
         
