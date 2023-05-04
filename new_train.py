@@ -120,13 +120,14 @@ def encode_board(board):
     return new_board
 
 def get_next_rows(board):
-    next_row = []
+    next_row = [5, 5, 5, 5, 5, 5, 5]
     for col in range(7):
         for row in range(5, -1, -1):
             if board[row][col] == 'e':
-                next_row.append(row)
+                next_row[col] = row
                 break
-        next_row.append(-1)
+        if board[0][col] != 'e':
+            next_row[col] = 0
 
     return next_row
 
@@ -137,7 +138,7 @@ env = Connect4()
 ### Instatiate models
 model = DQN()
 memory = Memory()
-num_episodes = 50000
+num_episodes = 100
 epsilon = 1
 
 reward = 0
@@ -155,15 +156,10 @@ for episode in range(num_episodes):
     memory.clear()
     
     epsilon = epsilon * .9998
-    
+
     # Play game
     while True:
         action, _ = get_action(model, observation, epsilon)
-        
-        env.drop_piece(action)
-        
-        random_turn(env)
-        observation = encode_board(env.board)
         
         if env.check_tie():
             reward = 10
@@ -175,8 +171,9 @@ for episode in range(num_episodes):
         # Set rewards for wins and losses
         if not done[0]:
             rows = get_next_rows(env.board)
-            if rows[action] == -1:
-                reward = -15
+            while rows[action] == -1:
+                action, _ = get_action(model, observation, epsilon)
+                reward -= 15
             else:
                 reward = 1
         elif 'y' in done[1]: # random player wins
@@ -186,9 +183,14 @@ for episode in range(num_episodes):
             win_count += 1
             reward = 100
             print(str(episode) + ": " + str(memory.actions) + " - network wins")
+            # env.print_board()
+
+        observation = encode_board(env.board)
 
         memory.add_to_memory(observation, action, reward)
         
+        random_turn(env)
+
         if done[0]:
             
             train_log[episode] = (win_count, win_count / (episode+1))

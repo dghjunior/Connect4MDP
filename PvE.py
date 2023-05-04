@@ -22,13 +22,13 @@ model.load_weights("models/DQN_weights.h5")
 class Connect4:
     def __init__(self):
         self.window = tk.Tk()
-        self.turn = 'y'
+        self.turn = 'r'
         self.new_board()
 
     def new_board(self):
         # create a new board with 'e' for empty in every position
         self.board = [['e' for x in range(7)] for y in range(6)]
-        self.turn = 'y'
+        self.turn = 'r'
         self.window.destroy()
 
         self.window = tk.Tk()
@@ -70,12 +70,13 @@ class Connect4:
 
         self.canvas.create_image(400, 350, image=bgimg)
         self.canvas.image = bgimg
-        string_var = tk.StringVar()
-        string_var.set("Hidden")
-        button9 = ttk.Button(utilties_frame, text="God Mode", style='W.TButton', command = self.utilities(string_var))
-        button9.pack()
-        label0 = tk.Label(utilties_frame, textvariable=string_var, font=("Arial", 10), bg="white")
-        label0.pack()
+        
+        #string_var = tk.StringVar()
+        #string_var.set("Hidden")
+        #button9 = ttk.Button(utilties_frame, text="God Mode", style='W.TButton', command = self.utilities(string_var))
+        #button9.pack()
+        #label0 = tk.Label(utilties_frame, textvariable=string_var, font=("Arial", 10), bg="white")
+        #label0.pack()
 
         self.model_move()
 
@@ -104,9 +105,9 @@ class Connect4:
         return new_board
     
     def utilities(self, string_var):
-        future = model.get_action(self.encode_board(self.board))
-        string_var.set(str(future[1:]))
-        print(future)
+        future = model.get_action(model, self.encode_board(self.board), 0.5)
+        string_var.set(str(future[1]))
+        print(str(future[1]))
 
     def available_moves(self):
         moves = []
@@ -122,10 +123,10 @@ class Connect4:
         else:
             for row in range(5, -1, -1):
                 if self.board[row][col] == 'e':
-                    if self.turn == 'r':
-                        self.playRed(row, col)
-                        self.board[row][col] = 'r'
-                        self.turn = 'y'
+                    if self.turn == 'y':
+                        self.playYellow(row, col)
+                        self.board[row][col] = 'y'
+                        self.turn = 'r'
                         break
 
             if self.check_win():
@@ -137,16 +138,16 @@ class Connect4:
             elif self.check_tie():
                 self.end_screen('tie')
         self.model_move()
-        future_move = model.get_action(self.encode_board(self.board))
+        future_move = model.get_action(self.encode_board(self.board), 0.2, self.available_moves())
 
     def model_move(self):
-        model_action = model.get_action(self.encode_board(self.board))
+        model_action = model.get_action(self.encode_board(self.board), 0.2, self.available_moves())
         for row in range(5, -1, -1):
             if self.board[row][model_action[0]] == 'e':
-                if self.turn == 'y':
-                    self.playYellow(row, model_action[0])
-                    self.board[row][model_action[0]] = 'y'
-                    self.turn = 'r'
+                if self.turn == 'r':
+                    self.playRed(row, model_action[0])
+                    self.board[row][model_action[0]] = 'r'
+                    self.turn = 'y'
                     break         
         if self.check_win():
             if self.turn == 'y':

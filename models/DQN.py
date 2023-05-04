@@ -26,10 +26,19 @@ class DQN(Model):
         
         return x
     
-    def get_action(self, observation):
+    def get_action(self, observation, epsilon, available_actions=[0, 1, 2, 3, 4, 5, 6]):
+        #determine whether model action or random action based on epsilon
+        act = np.random.choice(['model','random'], 1, p=[1-epsilon, epsilon])[0]
         observation = np.array(observation).reshape(1,6,7,1)
         logits = self.predict(observation, verbose=None)
         prob_weights = tf.nn.softmax(logits).numpy()
-        action = list(prob_weights[0]).index(max(prob_weights[0]))
+        
+        if act == 'model':
+            action = list(prob_weights[0]).index(max(prob_weights[0]))
+            while action not in available_actions:
+                prob_weights[0][action] = -1
+                action = list(prob_weights[0]).index(max(prob_weights[0]))
+        if act == 'random':
+            action = np.random.choice(available_actions)
             
         return action, prob_weights[0]
