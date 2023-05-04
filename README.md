@@ -11,6 +11,13 @@ Kyle Becker & Daniel Harper
 - Tkinter
 
 ## Description
+This project consists of the following parts:
+- a GUI that allows for PvP games of Connect 4
+- a GUI that allows for PvE games of Connect 4 against a Deep Q Network
+- A program to train the Deep Q Network against a random opponent
+- A program to train 2 Deep Q Networks against each other
+
+The DQN is implemented in Keras, and is a Convolutional Neural Net with a single convolution layer that creates 64 filters of size (4x4) to capture features of the board in order to reduce the size of the state space. It outputs the expected utility of each available move \[0,6\].
 
 ### Model Architecture
 ```
