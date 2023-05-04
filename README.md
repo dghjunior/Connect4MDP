@@ -67,5 +67,18 @@ To play against a trained network:
 $ python PvE
 ```
 
+## Author Contributions
+### Kyle Becker
+- Designed Network architecture and implemented network
+- Implemented training loop for vs. Random and vs. Network
+- Wrote README
+- Testing and debugging
+### Daniel Harper
+- Implemented game representation
+- Implemented PvP and PvE game loops
+- Implemented GUI
+- Testing and Debugging
+
 ## Acknowledgments
-The code for the training loop is borrowed heavily from [this Towards Data Science article](https://towardsdatascience.com/playing-connect-4-with-deep-q-learning-76271ed663ca) by Lee Schmalz, titled "Playing Connect 4 with Deep Q-Learning."
+- The code for the training loop is borrowed heavily from [this Towards Data Science article](https://towardsdatascience.com/playing-connect-4-with-deep-q-learning-76271ed663ca) by Lee Schmalz, titled "Playing Connect 4 with Deep Q-Learning."
+- The network architecture is inspired by [this Codebox article](https://codebox.net/pages/connect4) by Rob Dawson, titled "Learning to play Connect 4 with Deep Reinforcement Learning".
