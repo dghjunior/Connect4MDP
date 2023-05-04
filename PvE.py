@@ -6,7 +6,6 @@ import tensorflow as tf
 
 from Connect4 import Connect4
 from models.DQN import DQN
-import new_train
 
 # Piece Location Info:
 ## x for left = 123, y for top = 95
@@ -23,17 +22,17 @@ model.load_weights("models/DQN_weights.h5")
 class Connect4:
     def __init__(self):
         self.window = tk.Tk()
-        self.turn = 'r'
+        self.turn = 'y'
         self.new_board()
 
     def new_board(self):
         # create a new board with 'e' for empty in every position
         self.board = [['e' for x in range(7)] for y in range(6)]
-        self.turn = 'r'
+        self.turn = 'y'
         self.window.destroy()
 
         self.window = tk.Tk()
-        self.window.geometry('790x720')
+        self.window.geometry('790x830')
         self.window.configure(bg='white')
         self.window.title('Connect 4')
 
@@ -42,10 +41,12 @@ class Connect4:
 
         button_frame = tk.Frame(self.window, bg='white')
         canvas_frame = tk.Frame(self.window, bg='white')
+        utilties_frame = tk.Frame(self.window, bg='white')
         self.canvas = tk.Canvas(canvas_frame, bg="white", width=790, height=700)
 
         button_frame.pack()
         canvas_frame.pack()
+        utilties_frame.pack()
 
         button0 = ttk.Button(button_frame, text="1", style='W.TButton', command = lambda: self.drop_piece(0))
         button0.grid(row=0, column=0, padx=9, pady=10)
@@ -69,6 +70,14 @@ class Connect4:
 
         self.canvas.create_image(400, 350, image=bgimg)
         self.canvas.image = bgimg
+        string_var = tk.StringVar()
+        string_var.set("Hidden")
+        button9 = ttk.Button(utilties_frame, text="God Mode", style='W.TButton', command = self.utilities(string_var))
+        button9.pack()
+        label0 = tk.Label(utilties_frame, textvariable=string_var, font=("Arial", 10), bg="white")
+        label0.pack()
+
+        self.model_move()
 
         self.window.mainloop()
 
@@ -94,6 +103,11 @@ class Connect4:
                 new_board[row][col] = encoding[board[row][col]]
         return new_board
     
+    def utilities(self, string_var):
+        future = model.get_action(self.encode_board(self.board))
+        string_var.set(str(future[1:]))
+        print(future)
+
     def available_moves(self):
         moves = []
         for index in range(7):
@@ -123,9 +137,10 @@ class Connect4:
             elif self.check_tie():
                 self.end_screen('tie')
         self.model_move()
+        future_move = model.get_action(self.encode_board(self.board))
 
     def model_move(self):
-        model_action = model.get_action(model, self.encode_board(self.board), self.available_moves())
+        model_action = model.get_action(self.encode_board(self.board))
         for row in range(5, -1, -1):
             if self.board[row][model_action[0]] == 'e':
                 if self.turn == 'y':
