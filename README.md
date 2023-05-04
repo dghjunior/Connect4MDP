@@ -48,6 +48,10 @@ Trainable params: 54,919
 Non-trainable params: 0
 _________________________________________________________________
 ```
+
+### GUI Example
+<img width="770" alt="image" src="https://user-images.githubusercontent.com/57541884/236232125-7b59abe4-dfb4-46cc-8502-6bffa3e4e1da.png">
+
 ## Train the Model
 This step is not required, but if you want to run a training session for the model, use one of the following commands:
 
