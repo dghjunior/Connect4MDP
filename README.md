@@ -10,5 +10,10 @@ A Deep Q Learning network designed to play Connect4 against a user.
 ## Description
 
 
-## Running
+## Train the Model
+- This step is not required, but if you want to run a training session for the model, use one of the following commands:
 
+```bash
+$ python train.py
+$ python trainNvN.py
+```
