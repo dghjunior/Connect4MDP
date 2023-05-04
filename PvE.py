@@ -138,10 +138,10 @@ class Connect4:
             elif self.check_tie():
                 self.end_screen('tie')
         self.model_move()
-        future_move = model.get_action(self.encode_board(self.board), 0.2, self.available_moves())
+        future_move = model.get_action(self.encode_board(self.board), 0.3, self.available_moves())
 
     def model_move(self):
-        model_action = model.get_action(self.encode_board(self.board), 0.2, self.available_moves())
+        model_action = model.get_action(self.encode_board(self.board), 0.3, self.available_moves())
         for row in range(5, -1, -1):
             if self.board[row][model_action[0]] == 'e':
                 if self.turn == 'r':
