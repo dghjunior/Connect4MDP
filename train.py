@@ -39,7 +39,7 @@ def get_action(model, observation, epsilon, available_moves=[0,1,2,3,4,5,6]):
         #determine whether model action or random action based on epsilon
         act = np.random.choice(['model','random'], 1, p=[1-epsilon, epsilon])[0]
         observation = np.array(observation).reshape(1,6,7,1)
-        logits = model.predict(observation)
+        logits = model.predict(observation, verbose=None)
         prob_weights = tf.nn.softmax(logits).numpy()
         
         if act == 'model':
@@ -72,7 +72,7 @@ env = Connect4()
 ### Instatiate models
 model = DQN()
 memory = Memory()
-num_episodes = 50000
+num_episodes = 2500
 epsilon = 1
 
 reward = 0
@@ -104,6 +104,7 @@ for episode in range(num_episodes):
         if env.check_tie():
             reward = 1
             done = [True, 'tie']
+            print(str(episode) + ": " + str(memory.actions) + " - tie")
         else:
             done = env.check_win()
         
@@ -112,9 +113,11 @@ for episode in range(num_episodes):
             reward = 0
         elif 'y' in done[1]: # random player wins
             reward = -20
+            print(str(episode) + ": " + str(memory.actions) + " - loss")
         elif 'r' in done[1]: # network wins
             win_count += 1
             reward = 20
+            print(str(episode) + ": " + str(memory.actions) + " - win")
             
         # TODO: deal with ties ?
 

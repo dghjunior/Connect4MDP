@@ -138,7 +138,7 @@ env = Connect4()
 ### Instatiate models
 model = DQN()
 memory = Memory()
-num_episodes = 100
+num_episodes = 2500
 epsilon = 1
 
 reward = 0
