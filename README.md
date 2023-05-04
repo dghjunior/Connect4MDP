@@ -19,6 +19,8 @@ This project consists of the following parts:
 
 The DQN is implemented in Keras, and is a Convolutional Neural Net with a single convolution layer that creates 64 filters of size (4x4) to capture features of the board in order to reduce the size of the state space. It outputs the expected utility of each available move \[0,6\].
 
+The training loop has the network play through a series of Connect 4 games against either a random opponent or a second network. During each game, every (state, action) pair is recorded, and after each game, all (state, action) pairs are assigned a reward value based on the outcome of the game (win, loss, or tie). Loss is calculated between the predicted and assigned reward for a given action, then the gradients are backprogated through the network.
+
 ### Model Architecture
 ```
 _________________________________________________________________
