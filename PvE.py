@@ -6,37 +6,19 @@ import tensorflow as tf
 
 from Connect4 import Connect4
 from models.DQN import DQN
-from keras.models import load_model
-from keras.utils import custom_object_scope
+import new_train
 
 # Piece Location Info:
 ## x for left = 123, y for top = 95
 ## increase x by 92 for each column
 ## increase y by 92 for each row
 
-def compute_loss(logits, actions, rewards): 
-    neg_logprob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=actions)
-    loss = tf.reduce_mean(neg_logprob * rewards)
-    return loss
-
-def get_action(model, observation, epsilon):
-    #determine whether model action or random action based on epsilon
-    act = np.random.choice(['model','random'], 1, p=[1-epsilon, epsilon])[0]
-    observation = np.array(observation).reshape(1,6,7,1)
-    logits = model.predict(observation, verbose=None)
-    prob_weights = tf.nn.softmax(logits).numpy()
-    
-    if act == 'model':
-        action = list(prob_weights[0]).index(max(prob_weights[0]))
-    if act == 'random':
-        action = np.random.choice(7)
-        
-    return action, prob_weights[0]
-
 img_refs = []
 
-with custom_object_scope({'compute_loss': compute_loss}):
-    model = load_model('models/model2.h5')
+model = DQN()
+dummy_input = tf.zeros(shape=(1, 6, 7, 1))
+model(dummy_input)
+model.load_weights("models/DQN_weights.h5")
 
 class Connect4:
     def __init__(self):
@@ -47,7 +29,7 @@ class Connect4:
     def new_board(self):
         # create a new board with 'e' for empty in every position
         self.board = [['e' for x in range(7)] for y in range(6)]
-        self.turn = 'y'
+        self.turn = 'r'
         self.window.destroy()
 
         self.window = tk.Tk()
@@ -87,8 +69,6 @@ class Connect4:
 
         self.canvas.create_image(400, 350, image=bgimg)
         self.canvas.image = bgimg
-
-        self.model_move()
 
         self.window.mainloop()
 
@@ -145,7 +125,7 @@ class Connect4:
         self.model_move()
 
     def model_move(self):
-        model_action = get_action(model, self.encode_board(self.board), 0)
+        model_action = model.get_action(model, self.encode_board(self.board), self.available_moves())
         for row in range(5, -1, -1):
             if self.board[row][model_action[0]] == 'e':
                 if self.turn == 'y':
